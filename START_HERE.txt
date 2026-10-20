@@ -1,0 +1,12 @@
+SORT LAB — QUICK START (WINDOWS)
+
+1) Extract the ZIP and open PowerShell inside the sort-dataset-app folder.
+2) Run:
+   py -m venv .venv
+   .\.venv\Scripts\python.exe -m pip install -r requirements.txt
+   .\.venv\Scripts\python.exe app.py
+3) Open http://127.0.0.1:8000 in your browser.
+4) Stop the app using Ctrl+C in PowerShell.
+
+No Jupyter Notebook and no environment activation are required.
+See README.md for screenshots/testing guidance, alternate port, and GitHub push steps.

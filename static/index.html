@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111218">
+  <meta name="description" content="Sort CSV datasets with Pandas using ascending, descending, and multi-column rules.">
+  <title>Sort Lab — Dataset Workspace</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Sort Lab home">
+        <span class="brand-mark">S<span>/</span></span>
+        <span class="brand-name">SORT<span>LAB</span></span>
+      </a>
+      <div class="topbar-right">
+        <span class="live-dot"></span><span class="top-status">LOCAL WORKSPACE</span>
+        <span class="top-divider"></span>
+        <span class="task-chip">PYTHON / PANDAS <b>·</b> TASK 20</span>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <section class="hero">
+        <div class="hero-copy">
+          <div class="eyebrow"><span class="eyebrow-line"></span> DATA WRANGLING / 020</div>
+          <h1>Make messy rows<br><span>make sense.</span></h1>
+          <p class="hero-subtitle">Sort numerical and categorical data in a few clicks. Stack sort rules, inspect the result, and export a clean CSV — all powered by Pandas.</p>
+          <div class="hero-tags"><span>01 / ASCENDING</span><span>02 / DESCENDING</span><span>03 / MULTI-COLUMN</span></div>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="art-grid"></div>
+          <div class="art-card art-card-back"><span class="tiny-label">RAW DATA</span><div class="ghost-row"><i></i><i></i><i></i></div><div class="ghost-row"><i></i><i></i><i></i></div><div class="ghost-row"><i></i><i></i><i></i></div></div>
+          <div class="art-arrow">↘</div>
+          <div class="art-card art-card-front"><span class="tiny-label">SORTED / A—Z</span><div class="art-number">01<span>—</span>09</div><div class="art-bars"><i></i><i></i><i></i><i></i><i></i></div><div class="art-check">✓</div></div>
+          <div class="art-coordinate">PANDAS.SORT_VALUES()</div>
+        </div>
+      </section>
+
+      <section class="workspace-heading">
+        <div><div class="section-kicker">YOUR DESK <span>↗</span></div><h2>Dataset workspace</h2></div>
+        <div class="runtime-pill"><span class="runtime-dot"></span> Pandas engine ready</div>
+      </section>
+
+      <section class="workspace">
+        <aside class="control-column">
+          <div class="panel source-panel">
+            <div class="panel-heading"><span class="panel-index">01</span><div><h3>Choose your data</h3><p>Start with a sample or bring a CSV.</p></div></div>
+            <label class="field-label" for="datasetSelect">SAMPLE DATASET</label>
+            <select id="datasetSelect" class="select-control"><option>Loading datasets…</option></select>
+            <div id="datasetDescription" class="field-hint">Select a built-in dataset to begin.</div>
+            <div class="or-divider"><span></span> OR UPLOAD YOUR OWN <span></span></div>
+            <label for="csvUpload" class="upload-zone" id="uploadZone">
+              <span class="upload-icon">↑</span>
+              <span class="upload-title">Drop a .csv file here</span>
+              <span class="upload-caption">or <u>browse files</u> · up to 3 MB</span>
+              <input id="csvUpload" type="file" accept=".csv,text/csv" hidden>
+            </label>
+            <div id="sourceStatus" class="source-status"><span class="status-bullet"></span><span>Using Employee dataset</span></div>
+          </div>
+
+          <div class="panel rules-panel">
+            <div class="panel-heading"><span class="panel-index">02</span><div><h3>Build sort rules</h3><p>First rule has highest priority.</p></div></div>
+            <div id="rulesList" class="rules-list"></div>
+            <button id="addRuleButton" class="add-rule-button" type="button"><span>＋</span> Add another column</button>
+            <div class="rule-note"><span class="note-icon">i</span><span>For ties in the first column, the next rule decides the order.</span></div>
+            <button id="sortButton" class="primary-button" type="button"><span>Sort dataset</span><span class="button-arrow">↗</span></button>
+            <button id="resetButton" class="secondary-button" type="button">Reset to original order</button>
+          </div>
+        </aside>
+
+        <section class="results-column">
+          <div class="panel results-panel">
+            <div class="results-topline"><div><span class="panel-index">03</span><span class="result-label">LIVE PREVIEW</span></div><span id="sortedBadge" class="sorted-badge"><i></i> SORTED VIEW</span></div>
+            <div class="results-title-row"><div><h3 id="resultTitle">Employee dataset</h3><p id="resultSubtitle">Rows are ready to organize.</p></div><button id="downloadButton" class="download-button" type="button" disabled><span>↓</span> Export CSV</button></div>
+            <div class="stats-row">
+              <div class="stat-card"><span class="stat-label">TOTAL ROWS</span><strong id="rowCount">—</strong><span class="stat-foot">records in dataset</span></div>
+              <div class="stat-card"><span class="stat-label">COLUMNS</span><strong id="columnCount">—</strong><span class="stat-foot">fields detected</span></div>
+              <div class="stat-card"><span class="stat-label">SORT RULES</span><strong id="sortCount">—</strong><span class="stat-foot">priority levels</span></div>
+            </div>
+            <div class="table-toolbar"><div><span class="toolbar-mark">▦</span> <strong>Table preview</strong> <span id="tableCount" class="muted-count"></span></div><span id="tableMode" class="table-mode">ORIGINAL ORDER</span></div>
+            <div class="table-wrap"><table aria-label="Dataset preview"><thead id="tableHead"></thead><tbody id="tableBody"></tbody></table></div>
+            <div id="tableFooter" class="table-footer"><span>Previewing dataset rows</span><span class="footer-dots">•••</span></div>
+            <div id="emptyState" class="empty-state" hidden>Choose a dataset or upload a CSV to preview your rows.</div>
+          </div>
+          <div class="panel code-panel">
+            <div class="code-heading"><div><span class="code-spark">✳</span><div><h3>Under the hood</h3><p>The Pandas operation used for this sort.</p></div></div><span class="python-chip">PYTHON</span></div>
+            <pre><code id="codeSnippet">sorted_df = df.sort_values(
+    by=['Department', 'Salary'],
+    ascending=[True, False]
+)</code></pre>
+            <div class="code-foot"><span><i></i> PANDAS / DATAFRAME.SORT_VALUES()</span><span>NO NOTEBOOK REQUIRED</span></div>
+          </div>
+        </section>
+      </section>
+
+      <section class="learning-strip">
+        <div class="learning-icon">↕</div><div><div class="learning-label">QUICK CONCEPT</div><p><strong>Ascending</strong> moves from low to high (A → Z). <strong>Descending</strong> moves from high to low (Z → A). Mix both directions across columns to create precise sorting priorities.</p></div>
+        <div class="learning-end">SORT SMARTER <span>↗</span></div>
+      </section>
+      <footer class="footer"><span>© SORT LAB <b>·</b> TASK 20</span><span>BUILT WITH PYTHON + PANDAS <span class="footer-heart">✳</span></span></footer>
+    </main>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="/app.js" defer></script>
+</body>
+</html>
